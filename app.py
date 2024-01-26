@@ -83,7 +83,7 @@ def make_video(video_path, outdir='./vis_video_depth',encoder='vitl'):
             frame = transform({'image': frame})['image']
             frame = torch.from_numpy(frame).unsqueeze(0).to(DEVICE)
             
-            predict_depth(depth_anything, frame)
+            depth = predict_depth(depth_anything, frame)
 
             depth = F.interpolate(depth[None], (frame_height, frame_width), mode='bilinear', align_corners=False)[0, 0]
             depth = (depth - depth.min()) / (depth.max() - depth.min()) * 255.0
