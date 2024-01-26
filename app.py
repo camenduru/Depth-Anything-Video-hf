@@ -17,7 +17,9 @@ from depth_anything.util.transform import Resize, NormalizeImage, PrepareForNet
 def predict_depth(model, image):
     return model(image)
 
-def make_video(video_path, outdir='./vis_video_depth',encoder='vitl'):
+def make_video(video_path, outdir='./vis_video_depth',encoder='vits'):
+    # DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
+    # model = DepthAnything.from_pretrained('LiheYoung/depth_anything_vitl14').to(DEVICE).eval()
     # Define path for temporary processed frames
     temp_frame_dir = tempfile.mkdtemp()
     
@@ -115,8 +117,7 @@ css = """
     max-height: 80vh;
     }
 """
-DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
-model = DepthAnything.from_pretrained('LiheYoung/depth_anything_vitl14').to(DEVICE).eval()
+
 
 title = "# Depth Anything Video Demo"
 description = """Depth Anything on full video files.
@@ -137,9 +138,9 @@ transform = Compose([
         PrepareForNet(),
 ])
 
-@torch.no_grad()
-def predict_depth(model, image):
-    return model(image)
+# @torch.no_grad()
+# def predict_depth(model, image):
+#     return model(image)
 
 with gr.Blocks(css=css) as demo:
     gr.Markdown(title)
@@ -163,7 +164,7 @@ with gr.Blocks(css=css) as demo:
     example_files = os.listdir('assets/examples_video')
     example_files.sort()
     example_files = [os.path.join('assets/examples_video', filename) for filename in example_files]
-    examples = gr.Examples(examples=example_files, inputs=[input_video], outputs=processed_video, fn=on_submit, cache_examples=False)
+    examples = gr.Examples(examples=example_files, inputs=[input_video], outputs=processed_video, fn=on_submit, cache_examples=True)
     
 
 if __name__ == '__main__':
