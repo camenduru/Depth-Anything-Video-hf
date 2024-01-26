@@ -10,6 +10,12 @@ import tempfile
 from depth_anything.dpt import DepthAnything
 from depth_anything.util.transform import Resize, NormalizeImage, PrepareForNet
 
+
+@spaces.GPU
+@torch.no_grad()
+def predict_depth(model, image):
+    return model(image)
+
 def make_video(video_path, outdir='./vis_video_depth',encoder='vitl'):
     # Define path for temporary processed frames
     temp_frame_dir = tempfile.mkdtemp()
@@ -76,8 +82,7 @@ def make_video(video_path, outdir='./vis_video_depth',encoder='vitl'):
             frame = transform({'image': frame})['image']
             frame = torch.from_numpy(frame).unsqueeze(0).to(DEVICE)
             
-            with torch.no_grad():
-                depth = depth_anything(frame)
+            predict_depth(depth_anything, frame)
 
             depth = F.interpolate(depth[None], (frame_height, frame_width), mode='bilinear', align_corners=False)[0, 0]
             depth = (depth - depth.min()) / (depth.max() - depth.min()) * 255.0
