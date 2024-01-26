@@ -17,7 +17,7 @@ from depth_anything.util.transform import Resize, NormalizeImage, PrepareForNet
 def predict_depth(model, image):
     return model(image)
 
-def make_video(video_path, outdir='./vis_video_depth',encoder='vitb'):
+def make_video(video_path, outdir='./vis_video_depth',encoder='vitl'):
     # DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
     # model = DepthAnything.from_pretrained('LiheYoung/depth_anything_vitl14').to(DEVICE).eval()
     # Define path for temporary processed frames
@@ -149,7 +149,7 @@ with gr.Blocks(css=css) as demo:
 
     with gr.Row():
         input_video = gr.Video(label="Input Video")
-        model_type = gr.Dropdown(["vits", "vitb", "vitl"], type="value", label='Model Type')
+        model_type = gr.Dropdown(["vits", "vitl"], type="value", label='Model Type')
     submit = gr.Button("Submit")
     processed_video = gr.Video(label="Processed Video")
 
