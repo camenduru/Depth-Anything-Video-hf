@@ -149,22 +149,23 @@ with gr.Blocks(css=css) as demo:
 
     with gr.Row():
         input_video = gr.Video(label="Input Video")
+        model_type = gr.Dropdown(["vits", "vitb", "vitl"], type="value", label='Model Type')
     submit = gr.Button("Submit")
     processed_video = gr.Video(label="Processed Video")
 
-    def on_submit(uploaded_video):
+    def on_submit(uploaded_video,model_type):
                 
         # Process the video and get the path of the output video
-        output_video_path = make_video(uploaded_video)
+        output_video_path = make_video(uploaded_video,encoder=model_type)
 
         return output_video_path
 
-    submit.click(on_submit, inputs=[input_video], outputs=processed_video)
+    submit.click(on_submit, inputs=[input_video, model_type], outputs=processed_video)
 
     example_files = os.listdir('assets/examples_video')
     example_files.sort()
     example_files = [os.path.join('assets/examples_video', filename) for filename in example_files]
-    examples = gr.Examples(examples=example_files, inputs=[input_video], outputs=processed_video, fn=on_submit, cache_examples=True)
+    examples = gr.Examples(examples=example_files, inputs=[input_video, model_type], outputs=processed_video, fn=on_submit, cache_examples=True)
     
 
 if __name__ == '__main__':
