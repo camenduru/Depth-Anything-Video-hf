@@ -6,6 +6,7 @@ import torch
 import torch.nn.functional as F
 from torchvision.transforms import Compose
 import tempfile
+import spaces 
 
 from depth_anything.dpt import DepthAnything
 from depth_anything.util.transform import Resize, NormalizeImage, PrepareForNet
