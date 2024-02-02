@@ -12,7 +12,7 @@ from depth_anything.dpt import DepthAnything
 from depth_anything.util.transform import Resize, NormalizeImage, PrepareForNet
 
 
-@spaces.GPU
+# @spaces.GPU
 @torch.no_grad()
 def predict_depth(model, image):
     return model(image)
