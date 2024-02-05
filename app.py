@@ -85,7 +85,7 @@ def make_video(video_path, outdir='./vis_video_depth',encoder='vitl'):
                 break
             
             frame = cv2.cvtColor(raw_frame, cv2.COLOR_BGR2RGB) / 255.0
-            frame_pil =  Image.fromarray(frame).convert('RGB')
+            frame_pil =  Image.fromarray((frame * 255).astype(np.uint8))
             frame = transform({'image': frame})['image']
             
             frame = torch.from_numpy(frame).unsqueeze(0).to(DEVICE)
