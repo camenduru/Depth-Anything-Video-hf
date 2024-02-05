@@ -1,5 +1,6 @@
 import gradio as gr
 import cv2
+from PIL import Image
 import numpy as np
 from transformers import pipeline
 import os
@@ -86,9 +87,11 @@ def make_video(video_path, outdir='./vis_video_depth',encoder='vitl'):
             frame = cv2.cvtColor(raw_frame, cv2.COLOR_BGR2RGB) / 255.0
             
             frame = transform({'image': frame})['image']
+            frame_pil =  Image.fromarray(np.uint8(frame)).convert('RGB')
             frame = torch.from_numpy(frame).unsqueeze(0).to(DEVICE)
             
-            depth = predict_depth(depth_anything, frame)
+            
+            depth = predict_depth(depth_anything, frame_pil)
 
             depth = F.interpolate(depth[None], (frame_height, frame_width), mode='bilinear', align_corners=False)[0, 0]
             depth = (depth - depth.min()) / (depth.max() - depth.min()) * 255.0
