@@ -1,6 +1,7 @@
 import gradio as gr
 import cv2
 import numpy as np
+from transformers import pipeline
 import os
 import torch
 import torch.nn.functional as F
@@ -12,10 +13,10 @@ from depth_anything.dpt import DepthAnything
 from depth_anything.util.transform import Resize, NormalizeImage, PrepareForNet
 
 @torch.no_grad()
-@spaces.GPU
 def predict_depth(model, image):
-    return model(image)
+    return model(image)["depth"]
 
+@spaces.GPU
 def make_video(video_path, outdir='./vis_video_depth',encoder='vitl'):
     if encoder not in ["vitl","vitb","vits"]:
         encoder = "vits"
@@ -28,7 +29,8 @@ def make_video(video_path, outdir='./vis_video_depth',encoder='vitl'):
 
     DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
     DEVICE = "cuda"
-    depth_anything = DepthAnything.from_pretrained('LiheYoung/depth_anything_{}14'.format(encoder)).to(DEVICE).eval()
+    # depth_anything = DepthAnything.from_pretrained('LiheYoung/depth_anything_{}14'.format(encoder)).to(DEVICE).eval()
+    depth_anything = pipeline(task = "depth-estimation", model="nielsr/depth-anything-small", device=0)
     
     total_params = sum(param.numel() for param in depth_anything.parameters())
     print('Total parameters: {:.2f}M'.format(total_params / 1e6))
