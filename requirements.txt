@@ -2,5 +2,6 @@ gradio_imageslider
 gradio==4.14.0
 torch
 torchvision
+transformers
 opencv-python
 huggingface_hub
