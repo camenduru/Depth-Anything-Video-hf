@@ -22,6 +22,8 @@ def predict_depth(model, image):
 def make_video(video_path, outdir='./vis_video_depth',encoder='vitl'):
     if encoder not in ["vitl","vitb","vits"]:
         encoder = "vits"
+
+    mapper = {"vits":"small","vitb":"big","vitl":"large"}
     # DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
     # model = DepthAnything.from_pretrained('LiheYoung/depth_anything_vitl14').to(DEVICE).eval()
     # Define path for temporary processed frames
@@ -33,7 +35,7 @@ def make_video(video_path, outdir='./vis_video_depth',encoder='vitl'):
     DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
     DEVICE = "cuda"
     # depth_anything = DepthAnything.from_pretrained('LiheYoung/depth_anything_{}14'.format(encoder)).to(DEVICE).eval()
-    depth_anything = pipeline(task = "depth-estimation", model="nielsr/depth-anything-small", device=0)
+    depth_anything = pipeline(task = "depth-estimation", model=f"nielsr/depth-anything-{mapper[encoder]}", device=0)
     
     # total_params = sum(param.numel() for param in depth_anything.parameters())
     # print('Total parameters: {:.2f}M'.format(total_params / 1e6))
