@@ -6,6 +6,7 @@ from transformers import pipeline
 import os
 import torch
 import torch.nn.functional as F
+from torchvision import transforms
 from torchvision.transforms import Compose
 import tempfile
 import spaces 
@@ -27,6 +28,7 @@ def make_video(video_path, outdir='./vis_video_depth',encoder='vitl'):
     temp_frame_dir = tempfile.mkdtemp()
     
     margin_width = 50
+    to_tensor_transform = transforms.ToTensor()
 
     DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
     DEVICE = "cuda"
@@ -91,7 +93,7 @@ def make_video(video_path, outdir='./vis_video_depth',encoder='vitl'):
             frame = torch.from_numpy(frame).unsqueeze(0).to(DEVICE)
             
             
-            depth = torch.Tensor(predict_depth(depth_anything, frame_pil))
+            depth = to_tensor_transform(predict_depth(depth_anything, frame_pil))
 
             depth = F.interpolate(depth[None], (frame_height, frame_width), mode='bilinear', align_corners=False)[0, 0]
             depth = (depth - depth.min()) / (depth.max() - depth.min()) * 255.0
