@@ -32,8 +32,8 @@ def make_video(video_path, outdir='./vis_video_depth',encoder='vitl'):
     # depth_anything = DepthAnything.from_pretrained('LiheYoung/depth_anything_{}14'.format(encoder)).to(DEVICE).eval()
     depth_anything = pipeline(task = "depth-estimation", model="nielsr/depth-anything-small", device=0)
     
-    total_params = sum(param.numel() for param in depth_anything.parameters())
-    print('Total parameters: {:.2f}M'.format(total_params / 1e6))
+    # total_params = sum(param.numel() for param in depth_anything.parameters())
+    # print('Total parameters: {:.2f}M'.format(total_params / 1e6))
     
     transform = Compose([
         Resize(
