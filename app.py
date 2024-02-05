@@ -27,7 +27,7 @@ def make_video(video_path, outdir='./vis_video_depth',encoder='vitl'):
     margin_width = 50
 
     DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
-    
+    DEVICE = "cuda"
     depth_anything = DepthAnything.from_pretrained('LiheYoung/depth_anything_{}14'.format(encoder)).to(DEVICE).eval()
     
     total_params = sum(param.numel() for param in depth_anything.parameters())
