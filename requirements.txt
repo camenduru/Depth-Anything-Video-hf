@@ -1,6 +1,7 @@
 gradio_imageslider
 gradio==4.14.0
 torch
+pillow
 torchvision
 git+https://github.com/NielsRogge/transformers.git@add_depth_anything
 opencv-python
