@@ -23,7 +23,7 @@ def make_video(video_path, outdir='./vis_video_depth',encoder='vitl'):
     if encoder not in ["vitl","vitb","vits"]:
         encoder = "vits"
 
-    mapper = {"vits":"small","vitb":"big","vitl":"large"}
+    mapper = {"vits":"small","vitb":"base","vitl":"large"}
     # DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
     # model = DepthAnything.from_pretrained('LiheYoung/depth_anything_vitl14').to(DEVICE).eval()
     # Define path for temporary processed frames
