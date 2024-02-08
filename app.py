@@ -9,7 +9,6 @@ import torch.nn.functional as F
 from torchvision import transforms
 from torchvision.transforms import Compose
 import tempfile
-import spaces 
 
 from depth_anything.dpt import DepthAnything
 from depth_anything.util.transform import Resize, NormalizeImage, PrepareForNet
@@ -18,7 +17,6 @@ from depth_anything.util.transform import Resize, NormalizeImage, PrepareForNet
 def predict_depth(model, image):
     return model(image)["depth"]
 
-@spaces.GPU
 def make_video(video_path, outdir='./vis_video_depth',encoder='vitl'):
     if encoder not in ["vitl","vitb","vits"]:
         encoder = "vits"
